@@ -11,6 +11,8 @@ builder.Services.AddProblemDetails();
 builder.Services.AddDbContext<TwiggleDbContext>(options => options.UseNpgsql(
     builder.Configuration.GetConnectionString("Twiggle")
     ?? throw new InvalidOperationException("Set ConnectionStrings__Twiggle before starting the API.")));
+builder.Services.AddHttpClient<AiInterviewer>(http => http.Timeout = TimeSpan.FromSeconds(90));
+builder.Services.AddSingleton<InterviewLocks>();
 var app = builder.Build();
 app.UseExceptionHandler();
 app.Use(async (context, next) =>
@@ -30,6 +32,7 @@ if (builder.Configuration.GetValue<bool>("Database:ApplyMigrations"))
     await scope.ServiceProvider.GetRequiredService<TwiggleDbContext>().Database.MigrateAsync();
 }
 app.MapExperiences();
+app.MapAiInterview();
 app.MapGet("/api/health/live", () => Results.Ok(new { status = "healthy", service = "Twiggle.Api" }));
 app.MapGet("/api/health/ready", async (TwiggleDbContext db, CancellationToken ct) =>
 {
@@ -44,9 +47,9 @@ app.MapGet("/api/health/ready", async (TwiggleDbContext db, CancellationToken ct
         return Results.Problem(statusCode: 503, title: "Database unavailable");
     }
 });
-app.MapGet("/api/workspace", () => Results.Ok(new
+app.MapGet("/api/workspace", (AiInterviewer ai) => Results.Ok(new
 {
     id = "local-development", displayName = "Local workspace", mode = "development-only",
-    capabilities = new { interviews = true, persistence = true, ai = false }
+    capabilities = new { interviews = true, persistence = true, ai = ai.Configured }
 }));
 app.Run();

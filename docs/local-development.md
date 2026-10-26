@@ -1,6 +1,6 @@
 # Local Development — W2
 
-This is a local-only development application, not a deployed product. Manual sessions, original answers, reviewed facts, and episodes are now persisted. Hosted authentication, uploads, and AI processing are not implemented. See [First Saved Experience](first-experience.md).
+This is a local-only development application, not a deployed product. Manual sessions, original answers, reviewed facts, and episodes are now persisted. Hosted authentication and uploads are not implemented. For opt-in AI processing see [AI Interview Setup](ai-interview.md). See [First Saved Experience](first-experience.md).
 
 ## Prerequisites
 
@@ -76,7 +76,7 @@ Invoke-RestMethod http://127.0.0.1:5080/api/health/ready
 Invoke-RestMethod http://127.0.0.1:5080/api/workspace
 ```
 
-Expected: live reports `healthy`; ready reports `ready` and `database: connected`; workspace reports `development-only`, enabled manual interviews/persistence, and disabled AI. Home should show two connected service statuses.
+Expected: live reports `healthy`; ready reports `ready` and `database: connected`; workspace reports `development-only`, enabled manual interviews/persistence, and AI availability matching your server configuration. Home should show two connected service statuses.
 
 Stop the database with `docker compose stop postgres`. Readiness must return HTTP 503 while liveness remains HTTP 200. Restart with `docker compose start postgres`, then use **Check connection again** on Home. This separates an API-process problem from a database dependency problem.
 

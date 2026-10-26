@@ -2,7 +2,9 @@
 
 AI-guided experience discovery, a source-linked Experience Bank, and an evolving Personal Knowledge Graph.
 
-**Status:** Local manual experience capture. Sessions, append-only original answers, source-linked factual claims, explicit review, claim history, and Experience Bank records are persisted in PostgreSQL. Adaptive AI interviews, skill discovery, hosted authentication, exports/deletion UI, and deployment are not implemented.
+**Status:** AI-guided experience capture (requires your server-side API key). Sessions, append-only original answers, source-linked factual claims, explicit review, claim history, and Experience Bank records are persisted in PostgreSQL. AI summaries, focused follow-up questions, and source-linked candidate facts are implemented behind explicit session opt-in. Skill discovery, hosted authentication, exports/deletion UI, and deployment remain incomplete.
+
+See [AI Interview Setup](docs/ai-interview.md) to configure the model and continue existing answers.
 
 Start with [First Saved Experience](docs/first-experience.md) for the update and test flow.
 

@@ -1,6 +1,6 @@
 # First Saved Experience
 
-This release connects manual capture and factual review to PostgreSQL. It does not provide adaptive AI questions, skill discovery, or a capability graph yet. No external AI service receives your text.
+This release connects manual capture and factual review to PostgreSQL. For automatic summaries, follow-up questions, and candidate facts, use [AI Interview Setup](ai-interview.md). Manual capture remains available without external processing. Skill discovery and a capability graph are not implemented yet.
 
 ## Update and restart
 

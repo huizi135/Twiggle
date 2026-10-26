@@ -10,6 +10,7 @@ public sealed class InterviewSession
     public List<InterviewTurn> Turns { get; set; } = [];
     public List<ExperienceClaim> Claims { get; set; } = [];
     public ExperienceEpisode? Episode { get; set; }
+    public List<AiReply> AiReplies { get; set; } = [];
 }
 public sealed class InterviewTurn
 {
@@ -29,6 +30,7 @@ public sealed class ExperienceClaim
     public string Statement { get; set; } = "";
     public string ReviewStatus { get; set; } = "Pending";
     public string Origin { get; set; } = "UserAuthored";
+    public string? SourceQuote { get; set; }
     public List<ClaimRevision> Revisions { get; set; } = [];
 }
 public sealed class ClaimRevision
@@ -49,3 +51,19 @@ public sealed class ExperienceEpisode
     public DateTimeOffset SavedAt { get; set; } = DateTimeOffset.UtcNow;
 }
 public static class LocalWorkspace { public const string Id = "local-development"; }
+
+public sealed class AiReply
+{
+    public Guid Id { get; set; }
+    public Guid SessionId { get; set; }
+    public InterviewSession Session { get; set; } = null!;
+    public Guid SourceTurnId { get; set; }
+    public string Summary { get; set; } = "";
+    public string NextQuestion { get; set; } = "";
+    public string QuestionReason { get; set; } = "";
+    public string Model { get; set; } = "";
+    public string PolicyVersion { get; set; } = "";
+    public int SessionRevision { get; set; }
+    public DateTimeOffset ExternalProcessingAllowedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
+}

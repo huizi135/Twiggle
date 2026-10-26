@@ -57,6 +57,10 @@ try:
     original = 'I added a validation step to an existing build workflow.'
     payload = {'id': turn_id, 'text': original, 'expectedRevision': 0}
     session = call(path + '/turns', payload)
+    assert call('/ai/status')['configured'] is False
+    call(path + '/follow-up', {'turnId': turn_id, 'expectedRevision': 1, 'allowExternalProcessing': False}, expected=400)
+    call(path + '/follow-up', {'turnId': turn_id, 'expectedRevision': 1, 'allowExternalProcessing': True}, expected=503)
+    assert call(path)['turns'][0]['text'] == original
     assert session['revision'] == 1 and len(session['turns']) == 1
     assert len(call(path + '/turns', payload)['turns']) == 1
     call(path + '/turns', {**payload, 'text': 'Changed original'}, expected=409)

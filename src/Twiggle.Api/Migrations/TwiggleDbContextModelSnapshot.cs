@@ -22,6 +22,55 @@ namespace Twiggle.Api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Twiggle.Api.AiReply", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("ExternalProcessingAllowedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("NextQuestion")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PolicyVersion")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("QuestionReason")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("SessionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("SessionRevision")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("SourceTurnId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SessionId", "SourceTurnId")
+                        .IsUnique();
+
+                    b.ToTable("AiReplies");
+                });
+
             modelBuilder.Entity("Twiggle.Api.ClaimRevision", b =>
                 {
                     b.Property<Guid>("Id")
@@ -68,6 +117,9 @@ namespace Twiggle.Api.Migrations
 
                     b.Property<Guid>("SessionId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("SourceQuote")
+                        .HasColumnType("text");
 
                     b.Property<Guid>("SourceTurnId")
                         .HasColumnType("uuid");
@@ -157,6 +209,17 @@ namespace Twiggle.Api.Migrations
                     b.ToTable("Turns");
                 });
 
+            modelBuilder.Entity("Twiggle.Api.AiReply", b =>
+                {
+                    b.HasOne("Twiggle.Api.InterviewSession", "Session")
+                        .WithMany("AiReplies")
+                        .HasForeignKey("SessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Session");
+                });
+
             modelBuilder.Entity("Twiggle.Api.ClaimRevision", b =>
                 {
                     b.HasOne("Twiggle.Api.ExperienceClaim", "Claim")
@@ -216,6 +279,8 @@ namespace Twiggle.Api.Migrations
 
             modelBuilder.Entity("Twiggle.Api.InterviewSession", b =>
                 {
+                    b.Navigation("AiReplies");
+
                     b.Navigation("Claims");
 
                     b.Navigation("Episode");

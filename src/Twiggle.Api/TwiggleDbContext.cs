@@ -5,6 +5,7 @@ public sealed class TwiggleDbContext(DbContextOptions<TwiggleDbContext> options)
     public DbSet<InterviewSession> Sessions => Set<InterviewSession>();
     public DbSet<InterviewTurn> Turns => Set<InterviewTurn>();
     public DbSet<ExperienceClaim> Claims => Set<ExperienceClaim>();
+    public DbSet<AiReply> AiReplies => Set<AiReply>();
     public DbSet<ExperienceEpisode> Episodes => Set<ExperienceEpisode>();
     protected override void OnModelCreating(ModelBuilder model)
     {
@@ -14,6 +15,8 @@ public sealed class TwiggleDbContext(DbContextOptions<TwiggleDbContext> options)
         model.Entity<InterviewSession>().HasMany(x => x.Turns).WithOne(x => x.Session).HasForeignKey(x => x.SessionId);
         model.Entity<InterviewSession>().HasMany(x => x.Claims).WithOne(x => x.Session).HasForeignKey(x => x.SessionId);
         model.Entity<InterviewSession>().HasOne(x => x.Episode).WithOne(x => x.Session).HasForeignKey<ExperienceEpisode>(x => x.SessionId);
+        model.Entity<InterviewSession>().HasMany(x => x.AiReplies).WithOne(x => x.Session).HasForeignKey(x => x.SessionId);
+        model.Entity<AiReply>().HasIndex(x => new { x.SessionId, x.SourceTurnId }).IsUnique();
         model.Entity<ExperienceClaim>().HasOne(x => x.SourceTurn).WithMany().HasForeignKey(x => x.SourceTurnId).OnDelete(DeleteBehavior.Restrict);
         model.Entity<ExperienceClaim>().HasMany(x => x.Revisions).WithOne(x => x.Claim).HasForeignKey(x => x.ClaimId);
     }

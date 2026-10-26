@@ -75,12 +75,13 @@ public static class ExperienceEndpoints
             .Where(x => x.Session.WorkspaceId == LocalWorkspace.Id).OrderByDescending(x => x.SavedAt)
             .Select(x => new { x.Id, x.SessionId, x.Session.Title, x.SavedAt, AcceptedFacts = x.Session.Claims.Count(c => c.ReviewStatus == "Accepted") }).ToListAsync(ct)));
     }
-    static Task<InterviewSession?> Load(TwiggleDbContext db, Guid id, CancellationToken ct) => db.Sessions
-        .Include(x => x.Turns).Include(x => x.Claims).ThenInclude(x => x.Revisions).Include(x => x.Episode)
+    internal static Task<InterviewSession?> Load(TwiggleDbContext db, Guid id, CancellationToken ct) => db.Sessions
+        .Include(x => x.AiReplies).Include(x => x.Turns).Include(x => x.Claims).ThenInclude(x => x.Revisions).Include(x => x.Episode)
         .AsSplitQuery().SingleOrDefaultAsync(x => x.Id == id && x.WorkspaceId == LocalWorkspace.Id, ct);
-    static object View(InterviewSession s) => new { s.Id, s.Title, s.Revision, s.CreatedAt,
+    internal static object View(InterviewSession s) => new { s.Id, s.Title, s.Revision, s.CreatedAt,
         EpisodeId = s.Episode?.Id, Turns = s.Turns.OrderBy(x => x.CreatedAt).Select(x => new { x.Id, x.Text, x.CreatedAt }),
-        Claims = s.Claims.Select(x => new { x.Id, x.SourceTurnId, x.Statement, x.ReviewStatus, x.Origin,
+        AiReplies = s.AiReplies.OrderBy(x => x.CreatedAt).Select(x => new { x.Id, x.SourceTurnId, x.Summary, x.NextQuestion, x.QuestionReason, x.Model, x.PolicyVersion, x.SessionRevision, x.CreatedAt }),
+        Claims = s.Claims.Select(x => new { x.Id, x.SourceTurnId, x.Statement, x.ReviewStatus, x.Origin, x.SourceQuote,
             Revisions = x.Revisions.OrderBy(r => r.SessionRevision).Select(r => new { r.Statement, r.ReviewStatus, r.SessionRevision, r.RecordedAt }) }) };
     static IResult Stale() => Results.Conflict(new { message = "This session changed. Reload before retrying; your text has been kept." });
 }
