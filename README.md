@@ -9,6 +9,7 @@ AI-guided experience discovery, a source-linked Experience Bank, and an evolving
 Open [`docs/index.html`](docs/index.html) locally in a browser. Pages are self-contained, responsive, printable, and work offline.
 
 - [Product Blueprint](docs/index.html): purpose, scope, architecture, roadmap, decisions, and Windows setup.
+- [Web Architecture & UX](docs/web-architecture.html): web stack, routes, four core wireframes, interaction states, API boundaries, and delivery milestones.
 - [Phase 1 — Discover Yourself](docs/phase-1.html): interview policy, state lifecycle, claim-level model, evidence, UI, engineering steps, and evaluation.
 - [Phase 2 — Career Intelligence](docs/phase-2.html): market method, career hypotheses, constraints, matching, and traceable CVs.
 - [Phase 3 — Opportunities & Feedback](docs/phase-3.html): existing tracker integration, snapshots, applications, decisions, and feedback.
