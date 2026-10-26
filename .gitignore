@@ -13,3 +13,6 @@ dist/
 **/bin/
 **/obj/
 .vs/
+
+*.log
+.DS_Store

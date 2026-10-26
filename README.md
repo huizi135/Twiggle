@@ -2,7 +2,9 @@
 
 AI-guided experience discovery, a source-linked Experience Bank, and an evolving Personal Knowledge Graph.
 
-**Status:** Product and architecture discovery. This repository currently contains documentation only. No application has been implemented or deployed.
+**Status:** W2 local development skeleton. React routes, API liveness/readiness checks, an EF Core PostgreSQL connection, and local setup are implemented. Interviews, persistent domain records, live AI, authentication for hosted use, and deployment are not implemented.
+
+See [Local Development](docs/local-development.md) for Windows setup and verification.
 
 ## Documentation
 
@@ -33,6 +35,6 @@ If already cloned, inspect `git status` before using `git pull --ff-only`. Do no
 
 Experience before keywords. Discover through neutral questions. Preserve individual ownership and original sources. Separate facts, interpretations, preferences, and eligibility. Keep uncertainty visible and corrections effective. Private by default.
 
-The EVIDENCE handoff brief v0.1 (26 October 2026) is the conceptual baseline. Twiggle is the working name. Detailed personal source material is intentionally excluded from the repository; examples in the handbook are synthetic. Technical choices remain proposals until implementation review. No dependency versions, provider integrations, market datasets, or product behavior are claimed as validated.
+The EVIDENCE handoff brief v0.1 (26 October 2026) is the conceptual baseline. Twiggle is the working name. Detailed personal source material is intentionally excluded from the repository; examples in the handbook are synthetic. Technical choices remain proposals until implementation review. The local skeleton pins its dependencies with an npm lockfile and an explicit backend package version. Provider integrations and market datasets remain unvalidated.
 
 Repository documentation and development language: English. Collaboration language: Chinese.

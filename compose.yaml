@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: twiggle
+      POSTGRES_USER: twiggle
+      POSTGRES_PASSWORD: ${TWIGGLE_DB_PASSWORD:?Set TWIGGLE_DB_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:54329:5432"
+    volumes:
+      - twiggle_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U twiggle -d twiggle"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+volumes:
+  twiggle_postgres:
