@@ -2,7 +2,9 @@
 
 AI-guided experience discovery, a source-linked Experience Bank, and an evolving Personal Knowledge Graph.
 
-**Status:** W2 local development skeleton. React routes, API liveness/readiness checks, an EF Core PostgreSQL connection, and local setup are implemented. Interviews, persistent domain records, live AI, authentication for hosted use, and deployment are not implemented.
+**Status:** Local manual experience capture. Sessions, append-only original answers, source-linked factual claims, explicit review, claim history, and Experience Bank records are persisted in PostgreSQL. Adaptive AI interviews, skill discovery, hosted authentication, exports/deletion UI, and deployment are not implemented.
+
+Start with [First Saved Experience](docs/first-experience.md) for the update and test flow.
 
 See [Local Development](docs/local-development.md) for Windows setup and verification.
 

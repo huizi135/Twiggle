@@ -1,6 +1,6 @@
 # Local Development — W2
 
-This is a local-only technical skeleton, not a deployed product. The UI is English. Hosted authentication, durable interview records, domain migrations, uploads, and AI processing are not implemented.
+This is a local-only development application, not a deployed product. Manual sessions, original answers, reviewed facts, and episodes are now persisted. Hosted authentication, uploads, and AI processing are not implemented. See [First Saved Experience](first-experience.md).
 
 ## Prerequisites
 
@@ -36,7 +36,7 @@ docker compose ps
 
 Database endpoint: `127.0.0.1:54329`, database/user: `twiggle`. The volume preserves local data across container restarts. Changing the password in `.env` does not change an existing database role password; keep the original value or explicitly manage the role. Avoid `docker compose down -v` unless you intend to erase local database data.
 
-There are no domain tables or migrations in W2. Readiness checks connectivity only. Schema work begins with the interview persistence slice.
+The API startup script applies the initial EF Core migration before serving requests. Keep PostgreSQL running first. No EF CLI installation is required.
 
 ## 3. Start the API
 
@@ -64,7 +64,7 @@ npm ci
 npm run dev
 ```
 
-Open **http://127.0.0.1:5173/app**. Vite proxies `/api` requests to the local backend. All five workspace routes are available. Only Home service checks are connected; other pages describe planned functionality explicitly.
+Open **http://127.0.0.1:5173/app**. Vite proxies `/api` requests to the local backend. All five workspace routes are available. Discover and Experience Bank support manual capture and review. Capabilities and Settings remain explicitly labeled placeholders.
 
 The production frontend build is a bundle, not a configured deployment. `npm run preview` has no backend API proxy. Hosted routing fallback, authentication, HTTPS, and same-origin API serving must be configured before deployment.
 
@@ -76,7 +76,7 @@ Invoke-RestMethod http://127.0.0.1:5080/api/health/ready
 Invoke-RestMethod http://127.0.0.1:5080/api/workspace
 ```
 
-Expected: live reports `healthy`; ready reports `ready` and `database: connected`; workspace reports `development-only` and disabled interviews/persistence/AI. Home should show two connected service statuses.
+Expected: live reports `healthy`; ready reports `ready` and `database: connected`; workspace reports `development-only`, enabled manual interviews/persistence, and disabled AI. Home should show two connected service statuses.
 
 Stop the database with `docker compose stop postgres`. Readiness must return HTTP 503 while liveness remains HTTP 200. Restart with `docker compose start postgres`, then use **Check connection again** on Home. This separates an API-process problem from a database dependency problem.
 
@@ -108,4 +108,4 @@ Frontend production build and lint passed; API Release build passed with no warn
 
 ## Next slice
 
-Create one durable interview session and original answer, then a separately reviewed factual claim. Introduce migrations with that model. Do not add a fake AI response or treat placeholder capability cards as saved user data.
+Add adaptive questioning and candidate extraction behind the existing review boundary. Do not promote model interpretations directly into accepted facts or skills.

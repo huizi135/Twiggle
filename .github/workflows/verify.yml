@@ -18,9 +18,27 @@ jobs:
       - run: npm run build
   api:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: twiggle_test
+          POSTGRES_USER: twiggle
+          POSTGRES_PASSWORD: ci-only-password
+        ports:
+          - 54329:5432
+        options: >-
+          --health-cmd "pg_isready -U twiggle -d twiggle_test"
+          --health-interval 5s --health-timeout 3s --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.0.x
       - run: dotnet build src/Twiggle.Api --configuration Release
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python tests/experience-flow.py
+        env:
+          TWIGGLE_TEST_CONNECTION: Host=127.0.0.1;Port=54329;Database=twiggle_test;Username=twiggle;Password=ci-only-password
