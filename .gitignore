@@ -1,0 +1,15 @@
+# Local settings and private material
+.env
+.env.*
+!.env.example
+**/appsettings.Local.json
+private/
+uploads/
+transcripts/
+artifacts/private/
+# Build output
+node_modules/
+dist/
+**/bin/
+**/obj/
+.vs/
